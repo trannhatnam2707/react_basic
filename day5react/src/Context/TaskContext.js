@@ -12,15 +12,14 @@ export const TaskProvider = ({ children }) => {
   const api = 'http://localhost:3001/tasks';
 
   //Fetch data khi load App
-  useEffect(() => {
-    axios.get(api)
-      .then(res => setTasks(res.data))
-      .catch(err => console.log("Lỗi khi Fetch task: ", err))
-  },[])
-
-  useEffect(() => {
-  getTasks();
-}, []);
+    const getTasks = async () => {
+    const res = await axios.get(api);
+    setTasks(res.data);
+    };
+ 
+      useEffect(() => {
+      getTasks();
+    }, []);
 
 
   const addTask = async (newTaskTest) => {
@@ -30,11 +29,6 @@ export const TaskProvider = ({ children }) => {
     }
     const res = await axios.post(api, newTask)
     setTasks((prev) => [...prev, res.data]);
-  };
-
-  const getTasks = async () => {
-  const res = await axios.get(api);
-  setTasks(res.data);
   };
 
   const DeleteTask = async (id) => {
